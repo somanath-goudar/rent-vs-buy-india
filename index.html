@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rent vs Buy Calculator India 2025 — Should You Buy a House?</title>
+  <meta name="description" content="India's most accurate rent vs buy calculator. Compares real costs with stamp duty, registration, EMI, and property appreciation by city. Get a clear recommendation in seconds." />
+  <link rel="canonical" href="https://rent-vs-buy-india.vercel.app/" />
+
+  <!-- OG -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://rent-vs-buy-india.vercel.app/" />
+  <meta property="og:title" content="Rent vs Buy Calculator India 2025 — Should You Buy a House?" />
+  <meta property="og:description" content="Compare the true cost of renting vs buying in Mumbai, Bangalore, Delhi, Hyderabad and more. Includes stamp duty, EMI, appreciation, and opportunity cost." />
+  <meta property="og:image" content="https://rent-vs-buy-india.vercel.app/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rent vs Buy Calculator India 2025" />
+  <meta name="twitter:description" content="Should you rent or buy in your city? Get a data-backed answer in seconds." />
+
+  <!-- JSON-LD: WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Rent vs Buy Calculator India",
+    "url": "https://rent-vs-buy-india.vercel.app/",
+    "description": "Compare the true lifetime cost of renting vs buying property in Indian cities, including stamp duty, registration fees, EMI, maintenance, and opportunity cost.",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
+  }
+  </script>
+
+  <!-- JSON-LD: BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://rent-vs-buy-india.vercel.app/" },
+      { "@type": "ListItem", "position": 2, "name": "Rent vs Buy Calculator India" }
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is it better to rent or buy a house in India in 2025?",
+        "acceptedAnswer": { "@type": "Answer", "text": "It depends on your city, budget, and timeline. In high-appreciation cities like Bangalore and Mumbai, buying often wins after 8–12 years. But with high property prices and low rental yields (2–3%), renting can be smarter if you invest the saved amount. Use this calculator to get a personalised answer." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is stamp duty on property in India?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Stamp duty varies by state — typically 5–7% of the property value. Maharashtra charges 5%, Karnataka charges 5.6%, Delhi charges 6%, and Tamil Nadu charges 7%. Registration fees add another 1%. These one-time costs significantly impact the total cost of buying." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a good rental yield in India?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Rental yields in Indian metros are low — typically 2–3% per year. Mumbai yields around 2.5%, Bangalore 2.8%, and Hyderabad 3.2%. This means the annual rent is only 2–3% of the property price, making buying financially challenging without strong appreciation." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the break-even point for renting vs buying in India?",
+        "acceptedAnswer": { "@type": "Answer", "text": "In most Indian cities, the break-even point (when buying becomes cheaper than renting) is 8–15 years. High stamp duty, registration fees, and low rental yields delay the break-even. Cities with faster appreciation (Bangalore, Hyderabad) tend to have earlier break-even points." }
+      },
+      {
+        "@type": "Question",
+        "name": "Should I invest my down payment instead of buying a house?",
+        "acceptedAnswer": { "@type": "Answer", "text": "If you invest your down payment in equity mutual funds (expected 10–12% CAGR) instead of buying, the opportunity cost is significant. This calculator factors in the opportunity cost of locking capital in a down payment, giving you a true comparison." }
+      },
+      {
+        "@type": "Question",
+        "name": "How is EMI calculated for a home loan in India?",
+        "acceptedAnswer": { "@type": "Answer", "text": "EMI = [P × r × (1+r)^n] / [(1+r)^n – 1], where P is the loan principal, r is the monthly interest rate, and n is the number of months. For a ₹70L loan at 8.5% for 20 years, the EMI is approximately ₹60,800 per month." }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3250;
+      --accent-buy: #f97316;
+      --accent-rent: #3b82f6;
+      --accent-green: #22c55e;
+      --accent-red: #ef4444;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    a { color: var(--accent-rent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* NAV */
+    nav {
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    nav span { color: var(--text-muted); }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 48px 20px 32px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .hero .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(249,115,22,0.12);
+      border: 1px solid rgba(249,115,22,0.3);
+      color: var(--accent-buy);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .hero h1 span { color: var(--accent-buy); }
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* MAIN LAYOUT */
+    .main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 800px) {
+      .main { grid-template-columns: 1fr; }
+    }
+
+    /* CARD */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .card-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* FORM */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--accent-buy);
+      margin: 20px 0 12px;
+    }
+    .section-label:first-of-type { margin-top: 0; }
+
+    .field { margin-bottom: 16px; }
+    .field label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .field label span { color: var(--text); font-weight: 600; font-size: 0.9rem; }
+
+    select, input[type="number"] {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    select:focus, input[type="number"]:focus { border-color: var(--accent-buy); }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent-buy);
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 20px 0;
+    }
+
+    /* RESULT PANEL */
+    .result-col { display: flex; flex-direction: column; gap: 20px; }
+
+    /* VERDICT */
+    .verdict-card {
+      border-radius: var(--radius);
+      padding: 24px;
+      border: 1px solid;
+      text-align: center;
+    }
+    .verdict-card.buy {
+      background: rgba(249,115,22,0.08);
+      border-color: rgba(249,115,22,0.35);
+    }
+    .verdict-card.rent {
+      background: rgba(59,130,246,0.08);
+      border-color: rgba(59,130,246,0.35);
+    }
+    .verdict-card.neutral {
+      background: rgba(148,163,184,0.08);
+      border-color: rgba(148,163,184,0.3);
+    }
+    .verdict-icon { font-size: 2.5rem; margin-bottom: 8px; }
+    .verdict-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .verdict-sub { font-size: 0.9rem; color: var(--text-muted); }
+
+    /* METRICS GRID */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .metric-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .metric-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .buy-color { color: var(--accent-buy); }
+    .rent-color { color: var(--accent-rent); }
+    .green { color: var(--accent-green); }
+    .red { color: var(--accent-red); }
+
+    /* COMPARISON TABLE */
+    .cmp-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .cmp-table th {
+      text-align: left;
+      padding: 10px 12px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .cmp-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(46,50,80,0.5);
+    }
+    .cmp-table tr:last-child td { border-bottom: none; }
+    .cmp-table .total-row td { font-weight: 700; border-top: 1px solid var(--border); }
+
+    /* CHART */
+    .chart-wrap {
+      position: relative;
+      height: 280px;
+    }
+
+    /* SENSITIVITY */
+    .sensitivity-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 600px) {
+      .sensitivity-grid { grid-template-columns: 1fr; }
+    }
+    .sens-item label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .sens-item label span { color: var(--text); font-weight: 600; }
+    .sens-result {
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: var(--surface2);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .sens-result strong { color: var(--text); }
+
+    /* CITY DATA BADGE */
+    .city-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin: 4px;
+    }
+    .city-badge .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent-green);
+    }
+
+    /* HOW IT WORKS */
+    .how-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+    .how-section h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+    }
+    .step-num {
+      width: 36px; height: 36px;
+      background: rgba(249,115,22,0.15);
+      border: 1px solid rgba(249,115,22,0.3);
+      color: var(--accent-buy);
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px;
+    }
+    .step h3 { font-size: 0.95rem; margin-bottom: 6px; }
+    .step p { font-size: 0.82rem; color: var(--text-muted); }
+
+    /* FAQ */
+    .faq-section {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+    .faq-section h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .faq-q {
+      padding: 16px 20px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface);
+      user-select: none;
+    }
+    .faq-q:hover { background: var(--surface2); }
+    .faq-q .arrow { transition: transform 0.25s; color: var(--text-muted); }
+    .faq-q.open .arrow { transform: rotate(180deg); }
+    .faq-a {
+      padding: 0 20px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s;
+      background: var(--surface);
+    }
+    .faq-a.open { max-height: 300px; padding: 14px 20px 18px; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 24px 20px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    footer a { color: var(--text-muted); margin: 0 8px; }
+
+    @media (max-width: 600px) {
+      .metrics-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/">🏠 Home</a>
+  <span>›</span>
+  <span>Rent vs Buy Calculator India</span>
+</nav>
+
+<div class="hero">
+  <div class="badge">🇮🇳 India-Specific Data</div>
+  <h1>Should You <span>Rent or Buy</span> in Your City?</h1>
+  <p>Real numbers — stamp duty, registration, EMI, maintenance, appreciation, and opportunity cost — all in one place.</p>
+</div>
+
+<div class="main">
+  <!-- INPUT PANEL -->
+  <div class="card">
+    <div class="card-title">Your Details</div>
+
+    <div class="section-label">📍 City & Property</div>
+
+    <div class="field">
+      <label>City</label>
+      <select id="city">
+        <option value="bangalore">Bengaluru</option>
+        <option value="mumbai">Mumbai</option>
+        <option value="delhi">Delhi / NCR</option>
+        <option value="hyderabad">Hyderabad</option>
+        <option value="pune">Pune</option>
+        <option value="chennai">Chennai</option>
+        <option value="kolkata">Kolkata</option>
+        <option value="ahmedabad">Ahmedabad</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Property Price <span id="propVal">₹80L</span></label>
+      <input type="range" id="propertyPrice" min="20" max="500" step="5" value="80" />
+    </div>
+
+    <div class="field">
+      <label>Current Monthly Rent <span id="rentVal">₹25,000</span></label>
+      <input type="range" id="monthlyRent" min="5000" max="150000" step="1000" value="25000" />
+    </div>
+
+    <hr class="divider" />
+    <div class="section-label">🏦 Home Loan Details</div>
+
+    <div class="field">
+      <label>Down Payment <span id="dpVal">20%</span></label>
+      <input type="range" id="downPayment" min="10" max="50" step="5" value="20" />
+    </div>
+
+    <div class="field">
+      <label>Loan Interest Rate <span id="rateVal">8.5%</span></label>
+      <input type="range" id="loanRate" min="7.0" max="12.0" step="0.1" value="8.5" />
+    </div>
+
+    <div class="field">
+      <label>Loan Tenure <span id="tenureVal">20 years</span></label>
+      <input type="range" id="loanTenure" min="5" max="30" step="1" value="20" />
+    </div>
+
+    <hr class="divider" />
+    <div class="section-label">📈 Assumptions</div>
+
+    <div class="field">
+      <label>Expected Property Appreciation <span id="apprVal">6%/yr</span></label>
+      <input type="range" id="appreciation" min="0" max="15" step="0.5" value="6" />
+    </div>
+
+    <div class="field">
+      <label>Investment Return (if renting) <span id="invVal">10%/yr</span></label>
+      <input type="range" id="investReturn" min="4" max="20" step="0.5" value="10" />
+    </div>
+
+    <div class="field">
+      <label>Rent Increase per Year <span id="rentIncVal">5%/yr</span></label>
+      <input type="range" id="rentIncrease" min="0" max="15" step="1" value="5" />
+    </div>
+
+    <div class="field">
+      <label>Analysis Period <span id="periodVal">20 years</span></label>
+      <input type="range" id="analysisPeriod" min="5" max="30" step="1" value="20" />
+    </div>
+  </div>
+
+  <!-- RESULT PANEL -->
+  <div class="result-col">
+
+    <!-- VERDICT -->
+    <div id="verdictCard" class="verdict-card">
+      <div class="verdict-icon" id="verdictIcon">⚖️</div>
+      <div class="verdict-title" id="verdictTitle">Calculating…</div>
+      <div class="verdict-sub" id="verdictSub"></div>
+    </div>
+
+    <!-- KEY METRICS -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Monthly EMI</div>
+        <div class="metric-value buy-color" id="emiVal">—</div>
+        <div class="metric-sub" id="emiVsRent">vs your rent</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Break-Even Year</div>
+        <div class="metric-value" id="breakEvenVal">—</div>
+        <div class="metric-sub">buying becomes cheaper</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Upfront Cost</div>
+        <div class="metric-value buy-color" id="upfrontVal">—</div>
+        <div class="metric-sub">down payment + stamp duty</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Property Value (end)</div>
+        <div class="metric-value green" id="propEndVal">—</div>
+        <div class="metric-sub" id="propEndYr">after analysis period</div>
+      </div>
+    </div>
+
+    <!-- COST COMPARISON TABLE -->
+    <div class="card">
+      <div class="card-title">Cost Comparison over <span id="periodLabel">20</span> Years</div>
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th style="color: var(--accent-buy)">🏠 Buy</th>
+            <th style="color: var(--accent-rent)">🏢 Rent</th>
+          </tr>
+        </thead>
+        <tbody id="cmpBody"></tbody>
+      </table>
+    </div>
+
+    <!-- CHART -->
+    <div class="card">
+      <div class="card-title">Cumulative Cost Over Time</div>
+      <div class="chart-wrap">
+        <canvas id="costChart"></canvas>
+      </div>
+    </div>
+
+    <!-- CITY DATA -->
+    <div class="card">
+      <div class="card-title">City Data Used — <span id="cityName">Bengaluru</span></div>
+      <div id="cityBadges"></div>
+    </div>
+
+    <!-- SENSITIVITY -->
+    <div class="card">
+      <div class="card-title">Sensitivity: What If?</div>
+      <div class="sensitivity-grid">
+        <div class="sens-item">
+          <label>Appreciation Rate <span id="sApprVal">6%</span></label>
+          <input type="range" id="sAppreciation" min="0" max="15" step="0.5" value="6" style="accent-color: var(--accent-buy)" />
+        </div>
+        <div class="sens-item">
+          <label>Investment Return <span id="sInvVal">10%</span></label>
+          <input type="range" id="sInvestReturn" min="4" max="20" step="0.5" value="10" style="accent-color: var(--accent-rent)" />
+        </div>
+        <div class="sens-item">
+          <label>Rent Increase <span id="sRentVal">5%</span></label>
+          <input type="range" id="sRentIncrease" min="0" max="15" step="1" value="5" style="accent-color: var(--accent-rent)" />
+        </div>
+        <div class="sens-item">
+          <label>Loan Rate <span id="sRateVal">8.5%</span></label>
+          <input type="range" id="sLoanRate" min="7" max="12" step="0.1" value="8.5" style="accent-color: var(--accent-buy)" />
+        </div>
+      </div>
+      <div class="sens-result" id="sensResult">Adjust sliders to see how assumptions change the outcome.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how-section">
+  <h2>How It Works</h2>
+  <div class="steps-grid">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Enter Your Details</h3>
+      <p>Set property price, city, rent, loan rate, and tenure to match your real situation.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>City Data Applied</h3>
+      <p>We load real stamp duty, registration, and rental yield data for your selected city.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Full Cost Modelling</h3>
+      <p>Every rupee is counted — EMI, maintenance, opportunity cost, appreciation, rent growth.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h3>Get Your Answer</h3>
+      <p>See the break-even year, total cost comparison, and a clear buy vs rent recommendation.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+  <div id="faqList"></div>
+</div>
+
+<footer>
+  <p>Rent vs Buy Calculator India — For informational purposes only. Not financial advice.</p>
+  <p style="margin-top:8px">
+    <a href="/privacy.html">Privacy Policy</a>
+    <a href="/terms.html">Terms of Use</a>
+  </p>
+</footer>
+
+<script>
+// ── CITY DATA ──────────────────────────────────────────────────────────────
+const CITIES = {
+  bangalore: {
+    name: "Bengaluru",
+    stamp_duty_pct: 5.6,
+    registration_pct: 1.0,
+    maintenance_monthly: 4000,
+    avg_appreciation: 6.5,
+    rental_yield: 2.8
+  },
+  mumbai: {
+    name: "Mumbai",
+    stamp_duty_pct: 5.0,
+    registration_pct: 1.0,
+    maintenance_monthly: 5000,
+    avg_appreciation: 5.5,
+    rental_yield: 2.5
+  },
+  delhi: {
+    name: "Delhi / NCR",
+    stamp_duty_pct: 6.0,
+    registration_pct: 1.0,
+    maintenance_monthly: 3500,
+    avg_appreciation: 5.0,
+    rental_yield: 2.6
+  },
+  hyderabad: {
+    name: "Hyderabad",
+    stamp_duty_pct: 4.0,
+    registration_pct: 0.5,
+    maintenance_monthly: 3000,
+    avg_appreciation: 7.0,
+    rental_yield: 3.2
+  },
+  pune: {
+    name: "Pune",
+    stamp_duty_pct: 5.0,
+    registration_pct: 1.0,
+    maintenance_monthly: 3000,
+    avg_appreciation: 6.0,
+    rental_yield: 3.0
+  },
+  chennai: {
+    name: "Chennai",
+    stamp_duty_pct: 7.0,
+    registration_pct: 1.0,
+    maintenance_monthly: 2500,
+    avg_appreciation: 5.5,
+    rental_yield: 3.0
+  },
+  kolkata: {
+    name: "Kolkata",
+    stamp_duty_pct: 6.0,
+    registration_pct: 1.0,
+    maintenance_monthly: 2000,
+    avg_appreciation: 4.5,
+    rental_yield: 3.5
+  },
+  ahmedabad: {
+    name: "Ahmedabad",
+    stamp_duty_pct: 4.9,
+    registration_pct: 1.0,
+    maintenance_monthly: 2000,
+    avg_appreciation: 5.5,
+    rental_yield: 3.2
+  }
+};
+
+// ── FAQ ────────────────────────────────────────────────────────────────────
+const faqs = [
+  { q: "Is it better to rent or buy a house in India in 2025?", a: "It depends on your city, budget, and timeline. In high-appreciation cities like Bangalore and Mumbai, buying often wins after 8–12 years. But with high property prices and low rental yields (2–3%), renting can be smarter if you invest the saved amount. Use this calculator to get a personalised answer." },
+  { q: "What is stamp duty on property in India?", a: "Stamp duty varies by state — typically 5–7% of the property value. Maharashtra charges 5%, Karnataka charges 5.6%, Delhi charges 6%, and Tamil Nadu charges 7%. Registration fees add another 1%. These one-time costs significantly impact the total cost of buying." },
+  { q: "What is a good rental yield in India?", a: "Rental yields in Indian metros are low — typically 2–3% per year. Mumbai yields around 2.5%, Bangalore 2.8%, and Hyderabad 3.2%. This means the annual rent is only 2–3% of the property price, making buying financially challenging without strong appreciation." },
+  { q: "What is the break-even point for renting vs buying in India?", a: "In most Indian cities, the break-even point (when buying becomes cheaper than renting) is 8–15 years. High stamp duty, registration fees, and low rental yields delay the break-even. Cities with faster appreciation (Bangalore, Hyderabad) tend to have earlier break-even points." },
+  { q: "Should I invest my down payment instead of buying a house?", a: "If you invest your down payment in equity mutual funds (expected 10–12% CAGR) instead of buying, the opportunity cost is significant. This calculator factors in the opportunity cost of locking capital in a down payment, giving you a true comparison." },
+  { q: "How is EMI calculated for a home loan in India?", a: "EMI = [P × r × (1+r)^n] / [(1+r)^n – 1], where P is the loan principal, r is the monthly interest rate, and n is the number of months. For a ₹70L loan at 8.5% for 20 years, the EMI is approximately ₹60,800 per month." }
+];
+
+// ── HELPERS ────────────────────────────────────────────────────────────────
+function fmt(n) {
+  if (n >= 1e7) return `₹${(n / 1e7).toFixed(2)}Cr`;
+  if (n >= 1e5) return `₹${(n / 1e5).toFixed(2)}L`;
+  return `₹${Math.round(n).toLocaleString('en-IN')}`;
+}
+function fmtL(n) { return `₹${(n / 1e5).toFixed(1)}L`; }
+
+function calcEMI(principal, annualRate, years) {
+  const r = annualRate / 100 / 12;
+  const n = years * 12;
+  if (r === 0) return principal / n;
+  return (principal * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+}
+
+// ── CHART INSTANCE ─────────────────────────────────────────────────────────
+let chart = null;
+
+// ── MAIN CALC ──────────────────────────────────────────────────────────────
+function calculate() {
+  // inputs
+  const cityKey     = document.getElementById('city').value;
+  const propLakh    = parseFloat(document.getElementById('propertyPrice').value);
+  const rent0       = parseFloat(document.getElementById('monthlyRent').value);
+  const dpPct       = parseFloat(document.getElementById('downPayment').value) / 100;
+  const loanRate    = parseFloat(document.getElementById('loanRate').value);
+  const tenure      = parseFloat(document.getElementById('loanTenure').value);
+  const appPct      = parseFloat(document.getElementById('appreciation').value) / 100;
+  const invPct      = parseFloat(document.getElementById('investReturn').value) / 100;
+  const rentIncPct  = parseFloat(document.getElementById('rentIncrease').value) / 100;
+  const years       = parseFloat(document.getElementById('analysisPeriod').value);
+
+  const city = CITIES[cityKey];
+  const propPrice = propLakh * 1e5;
+  const downPayment = propPrice * dpPct;
+  const loanAmt = propPrice - downPayment;
+  const stampDuty = propPrice * (city.stamp_duty_pct / 100);
+  const regFee = propPrice * (city.registration_pct / 100);
+  const upfront = downPayment + stampDuty + regFee;
+
+  const emi = calcEMI(loanAmt, loanRate, tenure);
+  const maintMonthly = city.maintenance_monthly;
+
+  // Year-by-year simulation
+  const buyYearlyCost = [];
+  const rentYearlyCost = [];
+  const buyCumulative = [upfront];
+  const rentCumulative = [0];
+
+  // Renter's invested corpus (down payment + monthly difference)
+  let rentCorpus = upfront; // renter invests what buyer spent upfront
+  let currentRent = rent0;
+
+  let totalBuyCost = upfront;
+  let totalRentCost = 0;
+
+  let breakEvenYear = null;
+
+  for (let y = 1; y <= years; y++) {
+    // Buy costs this year
+    const buyAnnual = (emi * 12) + (maintMonthly * 12);
+    totalBuyCost += buyAnnual;
+    buyYearlyCost.push(buyAnnual);
+    buyCumulative.push(totalBuyCost);
+
+    // Rent costs this year
+    const rentAnnual = currentRent * 12;
+    totalRentCost += rentAnnual;
+    rentYearlyCost.push(rentAnnual);
+
+    // Renter invests difference (if EMI+maint > rent, they invest less; if less, they invest more)
+    const monthlyDiff = (emi + maintMonthly) - currentRent;
+    // Renter also has the invested down payment growing
+    rentCorpus = rentCorpus * (1 + invPct) + Math.max(monthlyDiff, 0) * 12;
+    // Renter spends more if rent > EMI+maint
+    const rentNetCost = totalRentCost - rentCorpus;
+
+    rentCumulative.push(totalRentCost);
+    currentRent *= (1 + rentIncPct);
+
+    // Break-even: net cost of buy (cost minus property value gained) vs net cost of rent
+    const propValueNow = propPrice * Math.pow(1 + appPct, y);
+    const buyNetCost = totalBuyCost - (propValueNow - propPrice); // subtract appreciation gain
+    const rentNetCostFinal = totalRentCost - rentCorpus;
+
+    if (!breakEvenYear && buyNetCost < rentNetCostFinal) {
+      breakEvenYear = y;
+    }
+  }
+
+  // Final property value
+  const finalPropValue = propPrice * Math.pow(1 + appPct, years);
+  // Final renter corpus
+  let finalCorpus = upfront;
+  let rent = rent0;
+  for (let y = 1; y <= years; y++) {
+    const diff = (emi + maintMonthly) - rent;
+    finalCorpus = finalCorpus * (1 + invPct) + Math.max(diff, 0) * 12;
+    rent *= (1 + rentIncPct);
+  }
+
+  // True net cost
+  const buyNetFinal = totalBuyCost - (finalPropValue - propPrice);
+  const rentNetFinal = totalRentCost - finalCorpus;
+  const savings = rentNetFinal - buyNetFinal;
+
+  // ── UPDATE UI ──
+  document.getElementById('periodLabel').textContent = years;
+
+  // EMI
+  document.getElementById('emiVal').textContent = fmt(emi);
+  const emiDiff = emi - rent0;
+  document.getElementById('emiVsRent').textContent = emiDiff > 0
+    ? `₹${Math.abs(Math.round(emiDiff)).toLocaleString('en-IN')} more than rent`
+    : `₹${Math.abs(Math.round(emiDiff)).toLocaleString('en-IN')} less than rent`;
+
+  // Break-even
+  document.getElementById('breakEvenVal').textContent = breakEvenYear
+    ? `Year ${breakEvenYear}` : `>${years} yrs`;
+
+  // Upfront
+  document.getElementById('upfrontVal').textContent = fmt(upfront);
+
+  // Property end value
+  document.getElementById('propEndVal').textContent = fmt(finalPropValue);
+  document.getElementById('propEndYr').textContent = `after ${years} years`;
+
+  // Verdict
+  const verdictCard = document.getElementById('verdictCard');
+  const verdictIcon = document.getElementById('verdictIcon');
+  const verdictTitle = document.getElementById('verdictTitle');
+  const verdictSub = document.getElementById('verdictSub');
+
+  verdictCard.className = 'verdict-card';
+  if (Math.abs(savings) < totalBuyCost * 0.05) {
+    verdictCard.classList.add('neutral');
+    verdictIcon.textContent = '⚖️';
+    verdictTitle.textContent = 'Too Close to Call';
+    verdictSub.textContent = `The ${years}-year costs are within 5% of each other. Either option works — choose based on lifestyle.`;
+  } else if (savings > 0) {
+    verdictCard.classList.add('buy');
+    verdictIcon.textContent = '🏠';
+    verdictTitle.innerHTML = `Buying saves you <span style="color:var(--accent-buy)">${fmt(Math.abs(savings))}</span>`;
+    verdictSub.textContent = breakEvenYear
+      ? `Buying becomes cheaper at Year ${breakEvenYear} and keeps winning after that.`
+      : `Buying hasn't broken even within ${years} years, but the property value gain tips the balance.`;
+  } else {
+    verdictCard.classList.add('rent');
+    verdictIcon.textContent = '🏢';
+    verdictTitle.innerHTML = `Renting saves you <span style="color:var(--accent-rent)">${fmt(Math.abs(savings))}</span>`;
+    verdictSub.textContent = `Over ${years} years, renting + investing the difference beats buying in ${city.name}.`;
+  }
+
+  // Comparison table
+  const loanTotal = emi * Math.min(tenure, years) * 12;
+  const maintTotal = maintMonthly * 12 * years;
+  const totalRentPaid = (() => { let r = rent0, t = 0; for (let y = 0; y < years; y++) { t += r * 12; r *= (1 + rentIncPct); } return t; })();
+
+  const rows = [
+    ["Down Payment", fmt(downPayment), "—"],
+    ["Stamp Duty + Reg.", fmt(stampDuty + regFee), "—"],
+    ["Total EMI Paid", fmt(loanTotal), "—"],
+    ["Maintenance", fmt(maintTotal), "—"],
+    ["Total Rent Paid", "—", fmt(totalRentPaid)],
+    ["Invested Corpus", "—", `−${fmt(finalCorpus)}`],
+    ["Property Appreciation", `−${fmt(finalPropValue - propPrice)}`, "—"],
+  ];
+
+  const buyGrandTotal = downPayment + stampDuty + regFee + loanTotal + maintTotal - (finalPropValue - propPrice);
+  const rentGrandTotal = totalRentPaid - finalCorpus;
+
+  const tbody = document.getElementById('cmpBody');
+  tbody.innerHTML = rows.map(([label, buy, rent]) => `
+    <tr>
+      <td>${label}</td>
+      <td class="buy-color">${buy}</td>
+      <td class="rent-color">${rent}</td>
+    </tr>
+  `).join('') + `
+    <tr class="total-row">
+      <td>Net Cost</td>
+      <td class="${buyGrandTotal < rentGrandTotal ? 'green' : 'buy-color'}">${fmt(buyGrandTotal)}</td>
+      <td class="${rentGrandTotal < buyGrandTotal ? 'green' : 'rent-color'}">${fmt(rentGrandTotal)}</td>
+    </tr>
+  `;
+
+  // Chart
+  const labels = ['Now', ...Array.from({ length: years }, (_, i) => `Yr ${i + 1}`)];
+  if (chart) chart.destroy();
+  chart = new Chart(document.getElementById('costChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: '🏠 Buy (Cumulative Cost)',
+          data: buyCumulative,
+          borderColor: '#f97316',
+          backgroundColor: 'rgba(249,115,22,0.08)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 0
+        },
+        {
+          label: '🏢 Rent (Cumulative Cost)',
+          data: rentCumulative,
+          borderColor: '#3b82f6',
+          backgroundColor: 'rgba(59,130,246,0.08)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 0
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { labels: { color: '#94a3b8', font: { size: 11 } } },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label.split(' ')[0]} ${fmt(ctx.raw)}`
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { color: '#64748b', maxTicksLimit: 8 }, grid: { color: '#1e2235' } },
+        y: { ticks: { color: '#64748b', callback: v => fmtL(v) }, grid: { color: '#1e2235' } }
+      }
+    }
+  });
+
+  // City badges
+  document.getElementById('cityName').textContent = city.name;
+  document.getElementById('cityBadges').innerHTML = `
+    <div class="city-badge"><span class="dot"></span>Stamp Duty: ${city.stamp_duty_pct}%</div>
+    <div class="city-badge"><span class="dot"></span>Reg. Fee: ${city.registration_pct}%</div>
+    <div class="city-badge"><span class="dot"></span>Avg Appreciation: ${city.avg_appreciation}%/yr</div>
+    <div class="city-badge"><span class="dot"></span>Rental Yield: ${city.rental_yield}%</div>
+    <div class="city-badge"><span class="dot"></span>Maintenance: ₹${city.maintenance_monthly.toLocaleString('en-IN')}/mo</div>
+  `;
+}
+
+// ── SENSITIVITY ────────────────────────────────────────────────────────────
+function sensitivityCalc() {
+  const sAppr = parseFloat(document.getElementById('sAppreciation').value);
+  const sInv = parseFloat(document.getElementById('sInvestReturn').value);
+  const sRentInc = parseFloat(document.getElementById('sRentIncrease').value);
+  const sRate = parseFloat(document.getElementById('sLoanRate').value);
+
+  document.getElementById('sApprVal').textContent = `${sAppr}%`;
+  document.getElementById('sInvVal').textContent = `${sInv}%`;
+  document.getElementById('sRentVal').textContent = `${sRentInc}%`;
+  document.getElementById('sRateVal').textContent = `${sRate.toFixed(1)}%`;
+
+  const propLakh = parseFloat(document.getElementById('propertyPrice').value);
+  const rent0 = parseFloat(document.getElementById('monthlyRent').value);
+  const dpPct = parseFloat(document.getElementById('downPayment').value) / 100;
+  const tenure = parseFloat(document.getElementById('loanTenure').value);
+  const years = parseFloat(document.getElementById('analysisPeriod').value);
+  const cityKey = document.getElementById('city').value;
+  const city = CITIES[cityKey];
+
+  const propPrice = propLakh * 1e5;
+  const downPayment = propPrice * dpPct;
+  const loanAmt = propPrice - downPayment;
+  const upfront = downPayment + propPrice * ((city.stamp_duty_pct + city.registration_pct) / 100);
+  const emi = calcEMI(loanAmt, sRate, tenure);
+  const maintMonthly = city.maintenance_monthly;
+
+  let corpus = upfront;
+  let rent = rent0;
+  let totalRent = 0;
+  let totalBuy = upfront;
+
+  for (let y = 1; y <= years; y++) {
+    totalBuy += (emi * 12) + (maintMonthly * 12);
+    totalRent += rent * 12;
+    const diff = (emi + maintMonthly) - rent;
+    corpus = corpus * (1 + sInv / 100) + Math.max(diff, 0) * 12;
+    rent *= (1 + sRentInc / 100);
+  }
+
+  const finalProp = propPrice * Math.pow(1 + sAppr / 100, years);
+  const buyNet = totalBuy - (finalProp - propPrice);
+  const rentNet = totalRent - corpus;
+  const diff = rentNet - buyNet;
+
+  const resultEl = document.getElementById('sensResult');
+  if (diff > 0) {
+    resultEl.innerHTML = `With these assumptions, <strong>buying saves ${fmt(Math.abs(diff))}</strong> over ${years} years.`;
+  } else if (diff < 0) {
+    resultEl.innerHTML = `With these assumptions, <strong>renting saves ${fmt(Math.abs(diff))}</strong> over ${years} years.`;
+  } else {
+    resultEl.innerHTML = `With these assumptions, costs are <strong>roughly equal</strong>.`;
+  }
+}
+
+// ── RANGE SYNC ─────────────────────────────────────────────────────────────
+function bindRange(id, displayId, fmt) {
+  const el = document.getElementById(id);
+  const disp = document.getElementById(displayId);
+  el.addEventListener('input', () => {
+    disp.textContent = fmt(el.value);
+    calculate();
+  });
+}
+
+function init() {
+  bindRange('propertyPrice', 'propVal', v => `₹${v}L`);
+  bindRange('monthlyRent', 'rentVal', v => `₹${parseInt(v).toLocaleString('en-IN')}`);
+  bindRange('downPayment', 'dpVal', v => `${v}%`);
+  bindRange('loanRate', 'rateVal', v => `${parseFloat(v).toFixed(1)}%`);
+  bindRange('loanTenure', 'tenureVal', v => `${v} years`);
+  bindRange('appreciation', 'apprVal', v => `${v}%/yr`);
+  bindRange('investReturn', 'invVal', v => `${v}%/yr`);
+  bindRange('rentIncrease', 'rentIncVal', v => `${v}%/yr`);
+  bindRange('analysisPeriod', 'periodVal', v => `${v} years`);
+
+  document.getElementById('city').addEventListener('change', calculate);
+
+  // Sensitivity sliders
+  ['sAppreciation', 'sInvestReturn', 'sRentIncrease', 'sLoanRate'].forEach(id => {
+    document.getElementById(id).addEventListener('input', sensitivityCalc);
+  });
+
+  // FAQ
+  const faqList = document.getElementById('faqList');
+  if (faqList) {
+    faqList.innerHTML = faqs.map((f, i) => `
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(${i})">
+          ${f.q} <span class="arrow">▼</span>
+        </div>
+        <div class="faq-a" id="faq-a-${i}">${f.a}</div>
+      </div>
+    `).join('');
+  }
+
+  calculate();
+  sensitivityCalc();
+}
+
+function toggleFaq(i) {
+  const q = document.querySelectorAll('.faq-q')[i];
+  const a = document.getElementById(`faq-a-${i}`);
+  if (!q || !a) return;
+  q.classList.toggle('open');
+  a.classList.toggle('open');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
